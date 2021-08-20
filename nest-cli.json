@@ -1,0 +1,57 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/aod/src",
+  "monorepo": true,
+  "root": "apps/aod",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/aod/tsconfig.app.json"
+  },
+  "projects": {
+    "aod": {
+      "type": "application",
+      "root": "apps/aod",
+      "entryFile": "main",
+      "sourceRoot": "apps/aod/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/aod/tsconfig.app.json"
+      }
+    },
+    "todo": {
+      "type": "application",
+      "root": "apps/todo",
+      "entryFile": "main",
+      "sourceRoot": "apps/todo/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/todo/tsconfig.app.json"
+      }
+    },
+    "iam": {
+      "type": "application",
+      "root": "apps/iam",
+      "entryFile": "main",
+      "sourceRoot": "apps/iam/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/iam/tsconfig.app.json"
+      }
+    },
+    "iam-client": {
+      "type": "library",
+      "root": "libs/iam-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/iam-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/iam-client/tsconfig.lib.json"
+      }
+    },
+    "todo-client": {
+      "type": "library",
+      "root": "libs/todo-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/todo-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/todo-client/tsconfig.lib.json"
+      }
+    }
+  }
+}

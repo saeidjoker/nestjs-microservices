@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@iam/iam-client": [
+        "libs/iam-client/src"
+      ],
+      "@iam/iam-client/*": [
+        "libs/iam-client/src/*"
+      ],
+      "@todo/todo-client": [
+        "libs/todo-client/src"
+      ],
+      "@todo/todo-client/*": [
+        "libs/todo-client/src/*"
+      ]
+    }
+  }
+}
