@@ -2,6 +2,8 @@ import { ApiProperty } from "@nestjs/swagger";
 import { TaskModel } from "@todo/todo-client/models/shared/task.model";
 
 export class ListTasksInput {
+  userId: number;
+
   @ApiProperty({ required: true, title: "Page number (0 based)", minimum: 0 })
   page: number;
 

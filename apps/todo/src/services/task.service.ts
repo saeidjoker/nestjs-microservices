@@ -65,7 +65,9 @@ export class TaskService {
   async list(input: ListTasksInput): Promise<ListTasksOutput> {
     const take = input.size || 20;
     const skip = input.page * take;
-    const where: FindConditions<TaskEntity> = {};
+    const where: FindConditions<TaskEntity> = {
+      userId: input.userId,
+    };
     if (!!input.titleFilter) {
       where.title = Like(`%${input.titleFilter}%`);
     }

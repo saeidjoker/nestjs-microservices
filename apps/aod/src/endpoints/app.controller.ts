@@ -10,6 +10,8 @@ import { NeedsRole } from "../auth/meta-data/needs-any-role";
 import { AddTaskInput, AddTaskOutput } from "@todo/todo-client/models/dto/add-task.dto";
 import { UpdateTaskInput, UpdateTaskOutput } from "@todo/todo-client/models/dto/update-tasks.dto";
 import { ListTasksInput, ListTasksOutput } from "@todo/todo-client/models/dto/list-tasks.dto";
+import { RequestIdentity } from "../auth/decorators/request-identity.decorator";
+import { Identity } from "../auth/models/identity";
 
 @Controller()
 export class AppController {
@@ -75,7 +77,14 @@ export class AppController {
   @ApiOperation({ summary: "List tasks" })
   @ApiResponse({ type: ListTasksOutput })
   @Get("tasks/list")
-  listTasks(@Query() input: ListTasksInput): Promise<ListTasksOutput> {
-    return this.todoClient.task.list(input);
+  listTasks(
+    @Query() input: Omit<ListTasksInput, "userId">,
+    @RequestIdentity() identity: Identity,
+  ): Promise<ListTasksOutput> {
+    const arg: ListTasksInput = {
+      userId: identity.id,
+      ...input,
+    };
+    return this.todoClient.task.list(arg);
   }
 }
