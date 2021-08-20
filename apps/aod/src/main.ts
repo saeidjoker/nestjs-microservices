@@ -4,6 +4,8 @@ import * as helmet from "helmet";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Transport } from "@nestjs/microservices";
+import { JwtMiddleware } from "./auth/middlewares/jwt.middleware";
+import { IamClient } from "@iam/iam-client";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -40,7 +42,7 @@ async function bootstrap() {
 
   app.use(helmet());
 
-  // app.use(JwtMiddleware.instance(app.get(AuthService)));
+  app.use(JwtMiddleware.getInstance(app.get(IamClient)));
 
   const config = new DocumentBuilder()
     .setTitle("AOD Gateway app")

@@ -13,6 +13,13 @@ async function bootstrap() {
         password: "Admin!@#",
         database: "aod_todo",
       },
+      iamRabbitMQ: {
+        transport: Transport.RMQ,
+        options: {
+          urls: ["amqp://admin:admin@localhost:5672"],
+          queue: "aod.iam",
+        },
+      },
     }),
     {
       transport: Transport.RMQ,

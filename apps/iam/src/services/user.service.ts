@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "../entities/user.entity";
 import { FindConditions, Repository } from "typeorm";
@@ -19,6 +13,9 @@ import {
   ValidateJwtTokenOutput,
 } from "@iam/iam-client/models/dto/validate-jwt-token.dto";
 import { JwtPayload } from "@iam/iam-client/models/shared/jwt-payload";
+import { ListUsersOutput } from "@iam/iam-client/models/dto/list-users.dto";
+import { UserModelConverter } from "../converters/user.model-converter";
+import { RpcErrorHelper } from "@shared/shared/rpc-error.helper";
 
 @Injectable()
 export class UserService {
@@ -36,7 +33,7 @@ export class UserService {
 
     // check the password
     if (!PasswordHelper.instance.verify(input.password, userEntity.password))
-      throw new UnauthorizedException("Wrong credentials");
+      RpcErrorHelper.unauthorized("Wrong credentials");
 
     // generate a JWT token
     const jwtToken = await this._createJwtTokenForUser(userEntity);
@@ -49,14 +46,14 @@ export class UserService {
   async register(input: RegisterInput): Promise<RegisterOutput> {
     // passwords must match
     if (input.password !== input.confirmPassword)
-      throw new BadRequestException("Passwords do not match");
+      RpcErrorHelper.badRequest("Passwords do not match");
 
     // email is unique
     const usernameExists: boolean = await this.userRepository.count({
       email: input.email,
     }) > 0;
     if (usernameExists)
-      throw new ConflictException("User Name already exists");
+      RpcErrorHelper.conflict("User Name already exists");
 
     // hash password
     const password = PasswordHelper.instance.hash(input.password);
@@ -96,7 +93,7 @@ export class UserService {
     const payload = await this._validateJwtToken(input.jwtToken);
 
     if (!payload)
-      throw new ForbiddenException("Invalid Token!");
+      RpcErrorHelper.forbidden("Invalid Token!");
 
     // load the user
     const userEntity = await this._getUserBy({ id: +payload.sub });
@@ -109,11 +106,19 @@ export class UserService {
     };
   }
 
+  async list(): Promise<ListUsersOutput> {
+    const userEntities = await this.userRepository.find({});
+
+    return {
+      users: userEntities.map(entity => UserModelConverter.convert(entity)),
+    };
+  }
+
   private async _getUserBy(criteria: FindConditions<UserEntity>): Promise<UserEntity> {
     const userEntity: UserEntity = await this.userRepository.findOne(criteria);
 
     if (!userEntity)
-      throw new UnauthorizedException("Wrong credentials");
+      RpcErrorHelper.unauthorized("Wrong credentials");
 
     return userEntity;
   }

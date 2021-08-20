@@ -84,7 +84,8 @@
     ],
     "moduleNameMapper": {
       "^@iam/iam-client(|/.*)$": "<rootDir>/libs/iam-client/src/$1",
-      "^@todo/todo-client(|/.*)$": "<rootDir>/libs/todo-client/src/$1"
+      "^@todo/todo-client(|/.*)$": "<rootDir>/libs/todo-client/src/$1",
+      "^@shared/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   }
 }

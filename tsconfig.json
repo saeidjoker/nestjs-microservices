@@ -24,6 +24,12 @@
       ],
       "@todo/todo-client/*": [
         "libs/todo-client/src/*"
+      ],
+      "@shared/shared": [
+        "libs/shared/src"
+      ],
+      "@shared/shared/*": [
+        "libs/shared/src/*"
       ]
     }
   }

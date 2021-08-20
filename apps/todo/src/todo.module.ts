@@ -4,13 +4,16 @@ import { TaskService } from "./services/task.service";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { TaskEntity } from "./entities/task.entity";
+import { IamClientModule } from "@iam/iam-client";
+import { RmqOptions } from "@nestjs/microservices";
 
 const entities = [TaskEntity];
 
 @Module({})
 export class TodoModule {
   static register(options: {
-    typeorm: TypeOrmModuleOptions
+    typeorm: TypeOrmModuleOptions,
+    iamRabbitMQ: RmqOptions,
   }): DynamicModule {
     return {
       module: TodoModule,
@@ -22,6 +25,9 @@ export class TodoModule {
         }),
         TypeOrmModule.forFeature(entities),
         ConfigModule.forRoot(),
+        IamClientModule.register({
+          rabbitMQ: options.iamRabbitMQ,
+        }),
       ],
       controllers: [TaskController],
       providers: [TaskService],

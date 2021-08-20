@@ -5,7 +5,7 @@ import { TaskClient } from "@todo/todo-client/clients/task.client";
 import { AddTaskInput, AddTaskOutput } from "@todo/todo-client/models/dto/add-task.dto";
 import { UpdateTaskInput, UpdateTaskOutput } from "@todo/todo-client/models/dto/update-tasks.dto";
 import { DeleteTaskInput } from "@todo/todo-client/models/dto/delete-task.dto";
-import { ListTasksInput, ListTasksOutput } from "@todo/todo-client/models/dto/list-task.dto";
+import { ListTasksInput, ListTasksOutput } from "@todo/todo-client/models/dto/list-tasks.dto";
 
 @Controller()
 export class TaskController {

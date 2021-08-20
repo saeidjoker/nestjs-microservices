@@ -4,7 +4,7 @@ import {
   ValidateJwtTokenInput,
   ValidateJwtTokenOutput,
 } from "@iam/iam-client/models/dto/validate-jwt-token.dto";
-import { Observable } from "rxjs";
+import { lastValueFrom } from "rxjs";
 
 export class InternalClient {
   constructor(
@@ -14,13 +14,17 @@ export class InternalClient {
 
   public static readonly getUserPattern = "internal.get-user";
 
-  getUser(input: GetUserInput): Observable<GetUserOutput> {
-    return this.client.send<GetUserOutput>(InternalClient.getUserPattern, input);
+  getUser(input: GetUserInput): Promise<GetUserOutput> {
+    return lastValueFrom(
+      this.client.send<GetUserOutput>(InternalClient.getUserPattern, input),
+    );
   }
 
   public static readonly validateJwtToken = "internal.validate-jwt-token";
 
-  validateJwtToken(input: ValidateJwtTokenInput): Observable<ValidateJwtTokenOutput> {
-    return this.client.send<GetUserOutput>(InternalClient.validateJwtToken, input);
+  validateJwtToken(input: ValidateJwtTokenInput): Promise<ValidateJwtTokenOutput> {
+    return lastValueFrom(
+      this.client.send<GetUserOutput>(InternalClient.validateJwtToken, input),
+    );
   }
 }
